@@ -1,0 +1,24 @@
+FROM python:3.10-slim
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование файла зависимостей
+COPY requirements.txt ./
+
+# Установка зависимостей
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копирование приложения
+COPY ./app /app
+
+# Копирование файла конфигурации
+COPY .env /app/.env
+
+# Установка переменной окружения PATH (если необходимо)
+ENV PATH="/root/.local/bin:$PATH"
+ENV APP_CONFIG__DB__URL=$APP_CONFIG__DB__URL
+# Команда для выполнения
+CMD ["sh", "-c", "sleep 2 && pip freeze && python ./core/config.py && alembic revision --autogenerate -m 'pre initial migrations' && alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"]
+
+
