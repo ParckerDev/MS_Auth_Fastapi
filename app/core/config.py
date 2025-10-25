@@ -10,7 +10,7 @@ LOG_DEFAULT_FORMAT = (
 
 
 class DatabaseConfig(BaseModel):
-    url: PostgresDsn = f'postgresql+asyncpg://user:password@db:5432/template'
+    url: PostgresDsn
     echo: bool = False
     echo_pool: bool = False
     pool_size: int = 10
